@@ -85,8 +85,10 @@ table td {
 }
 
 .big-info {
-	padding-top: 15px;
-	padding-bottom: 15px;
+	/* padding-top: 15px;
+	padding-bottom: 15px; */
+	padding-top: 12px;
+	height: 120px;
 }
 
 .big-info .icon-full-width i {

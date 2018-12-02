@@ -294,7 +294,7 @@ angular.module('netStatsApp.directives', [])
 		return {
 			restrict: 'EA',
 			scope: {
-				data: '='
+				data: '=',
 			},
 			link: function(scope, element, attrs)
 			{
@@ -353,7 +353,7 @@ angular.module('netStatsApp.directives', [])
 					element.empty();
 
 					/* Start drawing */
-					var svg = d3.select(".d3-blockpropagation").append("svg")
+					var svg = d3.select(attrs.d3class).append("svg")
 						.attr("width", width + margin.left + margin.right)
 						.attr("height", height + margin.top + margin.bottom)
 					  .append("g")
