@@ -224,7 +224,7 @@ netStatsApp.controller('StatsCtrl', function($scope, $filter, $localStorage, soc
 
 				break;
 
-			case "block":
+			case "fastBlock":
 				var index = findIndex({id: data.id});
 
 				if( index >= 0 && !_.isUndefined($scope.nodes[index]) && !_.isUndefined($scope.nodes[index].stats) )
@@ -249,6 +249,11 @@ netStatsApp.controller('StatsCtrl', function($scope, $filter, $localStorage, soc
 
 					updateBestBlock();
 				}
+
+				break;
+
+			case "snailBlock":
+				// TODO:
 
 				break;
 

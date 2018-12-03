@@ -81,7 +81,7 @@ external.plugin('emit', require('primus-emit'));
 var Collection = require('./lib/collection');
 var Nodes = new Collection(external);
 
-Nodes.setChartsCallback(function (err, charts)
+Nodes.setFastChartsCallback(function (err, charts)
 {
 	if(err !== null)
 	{
@@ -181,22 +181,22 @@ api.on('connection', function (spark)
 	{
 		if( !_.isUndefined(data.id) && !_.isUndefined(data.block) )
 		{
-			Nodes.addBlock(data.id, data.block, function (err, stats)
+			Nodes.addFastBlock(data.id, data.block, function (err, stats)
 			{
 				if(err !== null)
 				{
-					console.error('API', 'BLK', 'Block error:', err);
+					console.error('API', 'BLK', 'FastBlock error:', err);
 				}
 				else
 				{
 					if(stats !== null)
 					{
 						client.write({
-							action: 'block',
+							action: 'fastBlock',
 							data: stats
 						});
 
-						console.success('API', 'BLK', 'Block:', data.block['number'], 'from:', data.id);
+						console.success('API', 'BLK', 'FastBlock:', data.block['number'], 'from:', data.id);
 
 						Nodes.getCharts();
 					}
@@ -205,7 +205,40 @@ api.on('connection', function (spark)
 		}
 		else
 		{
-			console.error('API', 'BLK', 'Block error:', data);
+			console.error('API', 'BLK', 'FastBlock error:', data);
+		}
+	});
+
+
+	spark.on('snailBlock', function (data)
+	{
+		if( !_.isUndefined(data.id) && !_.isUndefined(data.block) )
+		{
+			Nodes.addSnailBlock(data.id, data.block, function (err, stats)
+			{
+				if(err !== null)
+				{
+					console.error('API', 'BLK', 'SnailBlock error:', err);
+				}
+				else
+				{
+					if(stats !== null)
+					{
+						client.write({
+							action: 'snailBlock',
+							data: stats
+						});
+
+						console.success('API', 'BLK', 'SnailBlock:', data.block['number'], 'from:', data.id);
+
+						Nodes.getCharts();
+					}
+				}
+			});
+		}
+		else
+		{
+			console.error('API', 'BLK', 'SnailBlock error:', data);
 		}
 	});
 
@@ -277,7 +310,7 @@ api.on('connection', function (spark)
 		var time = chalk.reset.cyan((new Date()).toJSON()) + " ";
 		console.time(time, 'COL', 'CHR', 'Got charts in');
 
-		Nodes.addHistory(data.id, data.history, function (err, history)
+		Nodes.addFastHistory(data.id, data.history, function (err, history)
 		{
 			console.timeEnd(time, 'COL', 'CHR', 'Got charts in');
 
@@ -333,12 +366,12 @@ api.on('connection', function (spark)
 
 			if( Nodes.requiresUpdate(data.id) )
 			{
-				var range = Nodes.getHistory().getHistoryRequestRange();
+				var range = Nodes.getFastHistory().getHistoryRequestRange();
 
 				spark.emit('history', range);
 				console.info('API', 'HIS', 'Asked:', data.id, 'for history:', range.min, '-', range.max);
 
-				Nodes.askedForHistory(true);
+				Nodes.askedForFastHistory(true);
 			}
 		}
 	});
