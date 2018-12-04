@@ -11,21 +11,30 @@ netStatsApp.controller('StatsCtrl', function($scope, $filter, $localStorage, soc
 	$scope.frontierHash = '0x11bbe8db4e347b4e8c937c1c8370e4b5ed33adb3db69cbdb7a38e1e50b1b82fa';
 	$scope.nodesTotal = 0;
 	$scope.nodesActive = 0;
-	$scope.bestBlock = 0;
-	$scope.lastBlock = 0;
 	$scope.lastDifficulty = 0;
 	$scope.upTimeTotal = 0;
-	$scope.avgBlockTime = 0;
-	$scope.blockPropagationAvg = 0;
 	$scope.avgHashrate = 0;
 	$scope.uncleCount = 0;
-	$scope.bestStats = {};
+	$scope.avgBlockTime = 0;
+
+	$scope.bestFastBlock = 0;
+	$scope.lastFastBlock = 0;
+	$scope.avgFastBlockTime = 0;
+	$scope.fastBlockPropagationAvg = 0;
+	$scope.bestFastStats = {};
+
+	$scope.bestSnailBlock = 0;
+	$scope.lastSnailBlock = 0;
+	$scope.avgSnailBlockTime = 0;
+	$scope.fastBlockPropagationAvg = 0;
+	$scope.bestSnailStats = {};
 
 	$scope.lastGasLimit = _.fill(Array(MAX_BINS), 2);
 	$scope.lastBlocksTime = _.fill(Array(MAX_BINS), 2);
 	$scope.difficultyChart = _.fill(Array(MAX_BINS), 2);
 	$scope.transactionDensity = _.fill(Array(MAX_BINS), 2);
 	$scope.gasSpending = _.fill(Array(MAX_BINS), 2);
+	$scope.fruits = _.fill(Array(MAX_BINS), 2);
 	$scope.miners = [];
 
 
@@ -153,11 +162,18 @@ netStatsApp.controller('StatsCtrl', function($scope, $filter, $localStorage, soc
 					// Init latency
 					latencyFilter(node);
 
-					// Init history
-					if( _.isUndefined(data.history) )
+					// Init fast history
+					if( _.isUndefined(data.fastHistory) )
 					{
-						data.history = new Array(40);
-						_.fill(data.history, -1);
+						data.fastHistory = new Array(40);
+						_.fill(data.fastHistory, -1);
+					}
+
+					// Init snail history
+					if( _.isUndefined(data.snailHistory) )
+					{
+						data.snailHistory = new Array(40);
+						_.fill(data.snailHistory, -1);
 					}
 
 					// Init or recover pin
@@ -229,11 +245,11 @@ netStatsApp.controller('StatsCtrl', function($scope, $filter, $localStorage, soc
 
 				if( index >= 0 && !_.isUndefined($scope.nodes[index]) && !_.isUndefined($scope.nodes[index].stats) )
 				{
-					if( $scope.nodes[index].stats.block.number < data.block.number )
+					if( $scope.nodes[index].stats.fastBlock.number < data.block.number )
 					{
 						var best = _.max($scope.nodes, function (node) {
-							return parseInt(node.stats.block.number);
-						}).stats.block;
+							return parseInt(node.stats.fastBlock.number);
+						}).stats.fastBlock;
 
 						if (data.block.number > best.number) {
 							data.block.arrived = _.now();
@@ -241,11 +257,11 @@ netStatsApp.controller('StatsCtrl', function($scope, $filter, $localStorage, soc
 							data.block.arrived = best.arrived;
 						}
 
-						$scope.nodes[index].history = data.history;
+						$scope.nodes[index].fastHistory = data.history;
 					}
 
-					$scope.nodes[index].stats.block = data.block;
-					$scope.nodes[index].stats.propagationAvg = data.propagationAvg;
+					$scope.nodes[index].stats.fastBlock = data.block;
+					$scope.nodes[index].stats.fastPropagationAvg = data.propagationAvg;
 
 					updateBestBlock();
 				}
@@ -253,7 +269,30 @@ netStatsApp.controller('StatsCtrl', function($scope, $filter, $localStorage, soc
 				break;
 
 			case "snailBlock":
-				// TODO:
+				var index = findIndex({id: data.id});
+
+				if( index >= 0 && !_.isUndefined($scope.nodes[index]) && !_.isUndefined($scope.nodes[index].stats) )
+				{
+					if( $scope.nodes[index].stats.snailBlock.number < data.block.number )
+					{
+						var best = _.max($scope.nodes, function (node) {
+							return parseInt(node.stats.snailBlock.number);
+						}).stats.snailBlock;
+
+						if (data.block.number > best.number) {
+							data.block.arrived = _.now();
+						} else {
+							data.block.arrived = best.arrived;
+						}
+
+						$scope.nodes[index].snailHistory = data.history;
+					}
+
+					$scope.nodes[index].stats.snailBlock = data.block;
+					$scope.nodes[index].stats.snailPropagationAvg = data.propagationAvg;
+
+					updateBestBlock();
+				}
 
 				break;
 
@@ -330,7 +369,8 @@ netStatsApp.controller('StatsCtrl', function($scope, $filter, $localStorage, soc
 
 				break;
 
-			case "charts":
+			case "fastCharts":
+				console.error( "IN FAST CHARTS", data );
 				if( !_.isEqual($scope.avgBlockTime, data.avgBlocktime) )
 					$scope.avgBlockTime = data.avgBlocktime;
 
@@ -496,7 +536,7 @@ netStatsApp.controller('StatsCtrl', function($scope, $filter, $localStorage, soc
 		}, 0) / $scope.nodes.length;
 
 		$scope.map = _.map($scope.nodes, function (node) {
-			var fill = $filter('bubbleClass')(node.stats, $scope.bestBlock);
+			var fill = $filter('bubbleClass')(node.stats, $scope.bestFastBlock);
 
 			if(node.geo != null)
 				return {
@@ -555,25 +595,45 @@ netStatsApp.controller('StatsCtrl', function($scope, $filter, $localStorage, soc
 			// 	return result;
 			// }, {});
 
-			var bestBlock = _.max($scope.nodes, function (node)
+			var bestFastBlock = _.max($scope.nodes, function (node)
 			{
 				// if( $scope.chains[node.stats.block.number].fork === node.stats.block.fork && $scope.chains[node.stats.block.number].score / $scope.maxScore >= 0.5 )
 				// {
-					return parseInt(node.stats.block.number);
+					return parseInt(node.stats.fastBlock.number);
 				// }
 
 				// return 0;
-			}).stats.block.number;
+			}).stats.fastBlock.number;
 
-			if( bestBlock !== $scope.bestBlock )
+			if( bestFastBlock !== $scope.bestFastBlock )
 			{
-				$scope.bestBlock = bestBlock;
-				$scope.bestStats = _.max($scope.nodes, function (node) {
-					return parseInt(node.stats.block.number);
+				$scope.bestFastBlock = bestFastBlock;
+				$scope.bestFastStats = _.max($scope.nodes, function (node) {
+					return parseInt(node.stats.fastBlock.number);
 				}).stats;
 
-				$scope.lastBlock = $scope.bestStats.block.arrived;
-				$scope.lastDifficulty = $scope.bestStats.block.difficulty;
+				$scope.lastFastBlock = $scope.bestFastStats.fastBlock.arrived;
+			}
+
+			var bestSnailBlock = _.max($scope.nodes, function (node)
+			{
+				// if( $scope.chains[node.stats.block.number].fork === node.stats.block.fork && $scope.chains[node.stats.block.number].score / $scope.maxScore >= 0.5 )
+				// {
+					return parseInt(node.stats.snailBlock.number);
+				// }
+
+				// return 0;
+			}).stats.snailBlock.number;
+
+			if( bestSnailBlock !== $scope.bestSnailBlock )
+			{
+				$scope.bestSnailBlock = bestSnailBlock;
+				$scope.bestSnailStats = _.max($scope.nodes, function (node) {
+					return parseInt(node.stats.snailBlock.number);
+				}).stats;
+
+				$scope.lastSnailBlock = $scope.bestSnailStats.snailBlock.arrived;
+				$scope.lastDifficulty = $scope.bestSnailStats.snailBlock.difficulty;
 			}
 		}
 	}

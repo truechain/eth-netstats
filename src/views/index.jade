@@ -12,14 +12,14 @@ block content
                 i.icon-block
               div.big-details-holder
                 span.small-title fast block
-                span.big-details {{'#'}}{{ bestBlock | number}}
+                span.big-details {{'#'}}{{ bestFastBlock | number}}
           div.col-xs-3.stat-holder
-            div.big-info.blocktime(class="{{ lastBlock | timeClass : true }}")
+            div.big-info.blocktime(class="{{ lastFastBlock | timeClass : true }}")
               div.pull-left.icon-full-width
                 i.icon-time
               div.big-details-holder
                 span.small-title fast last block
-                span.big-details {{ lastBlock | blockTimeFilter }}
+                span.big-details {{ lastFastBlock | blockTimeFilter }}
                 //- span.big-details(time-ago="lastBlock")
           div.col-xs-3.stat-holder
             div.big-info.avgblocktime(class="{{ avgBlockTime | avgTimeClass }}")
@@ -41,15 +41,15 @@ block content
                 i.icon-block
               div.big-details-holder
                 span.small-title snail block
-                span.big-details {{'#'}}{{ bestBlock | number}}
+                span.big-details {{'#'}}{{ bestSnailBlock | number}}
               div.clearfix
           div.col-xs-3.stat-holder
-            div.big-info.blocktime(class="{{ lastBlock | timeClass : true }}")
+            div.big-info.blocktime(class="{{ lastSnailBlock | timeClass : true }}")
               div.pull-left.icon-full-width
                 i.icon-time
               div.big-details-holder
                 span.small-title snail last block
-                span.big-details {{ lastBlock | blockTimeFilter }}
+                span.big-details {{ lastSnailBlock | blockTimeFilter }}
                 //- span.big-details(time-ago="lastBlock")
           div.col-xs-3.stat-holder
             div.big-info.avgblocktime(class="{{ avgBlockTime | avgTimeClass }}")
@@ -84,17 +84,17 @@ block content
             div.gasprice.text-info
               i.icon-gasprice
               span.small-title gas price
-              span.small-value {{ bestStats.gasPrice.toString() | gasPriceFilter }}
+              span.small-value {{ bestFastStats.gasPrice.toString() | gasPriceFilter }}
           div.col-xs-2.stat-holder.box
             div.gasprice.text-info
               i.icon-gasprice
               span.small-title gas limit
-              span.small-value {{ bestStats.block.gasLimit }} gas
+              span.small-value {{ bestFastStats.fastBlock.gasLimit }} gas
           div.col-xs-2.stat-holder.box
             div.gasprice.text-info
               i.icon-gasprice
               span.small-title fruits in snailblock
-              span.small-value {{ bestStats.block.gasLimit }} gas
+              span.small-value {{ bestSnailStats.snailblock.fruis }}
           div.col-xs-2.stat-holder.box
             div.page-latency(class="{{ {active: true, latency: latency} | latencyClass }}")
               i.icon-clock
@@ -182,7 +182,7 @@ block content
               //- i.icon-difficulty
               span.small-title fruit number
               //- span.small-value {{ lastDifficulty | number }}
-              sparkchart.big-details.spark-difficulty(data="{{difficultyChart.join(',')}}")
+              sparkchart.big-details.spark-difficulty(data="{{fruits.join(',')}}")
 
           div.col-xs-2.stat-holder.xpull-right
             div.big-info.chart.xdouble-chart

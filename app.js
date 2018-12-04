@@ -181,6 +181,7 @@ api.on('connection', function (spark)
 	{
 		if( !_.isUndefined(data.id) && !_.isUndefined(data.block) )
 		{
+			// console.error( "fast block:", data.block );
 			Nodes.addFastBlock(data.id, data.block, function (err, stats)
 			{
 				if(err !== null)
@@ -276,7 +277,7 @@ api.on('connection', function (spark)
 		if( !_.isUndefined(data.id) && !_.isUndefined(data.stats) )
 		{
 
-			Nodes.updateStats(data.id, data.stats, function (err, stats)
+			Nodes.updateBasicStats(data.id, data.stats, function (err, stats)
 			{
 				if(err !== null)
 				{
@@ -321,7 +322,32 @@ api.on('connection', function (spark)
 			else
 			{
 				client.write({
-					action: 'charts',
+					action: 'fastCharts',
+					data: history
+				});
+			}
+		});
+	});
+
+	spark.on('snailHistory', function (data)
+	{
+		console.success('API', 'HIS', 'Got snail history from:', data.id);
+
+		var time = chalk.reset.cyan((new Date()).toJSON()) + " ";
+		console.time(time, 'COL', 'CHR', 'Got snail charts in');
+
+		Nodes.addSnailHistory(data.id, data.history, function (err, history)
+		{
+			console.timeEnd(time, 'COL', 'CHR', 'Got snail charts in');
+
+			if(err !== null)
+			{
+				console.error('COL', 'CHR', 'Snail History error:', err);
+			}
+			else
+			{
+				client.write({
+					action: 'snailCharts',
 					data: history
 				});
 			}
