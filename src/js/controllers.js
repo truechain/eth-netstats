@@ -28,13 +28,13 @@ netStatsApp.controller('StatsCtrl', function($scope, $filter, $localStorage, soc
 	$scope.fastBlockPropagationAvg = 0;
 	$scope.bestSnailStats = {};
 
-	$scope.lastGasLimit = _.fill(Array(MAX_BINS), 2);
-	$scope.lastFastBlocksTime = _.fill(Array(MAX_BINS), 2);
-	$scope.lastSnailBlocksTime = _.fill(Array(MAX_BINS), 2);
-	$scope.difficultyChart = _.fill(Array(MAX_BINS), 2);
-	$scope.transactionDensity = _.fill(Array(MAX_BINS), 2);
-	$scope.gasSpending = _.fill(Array(MAX_BINS), 2);
-	$scope.fruits = _.fill(Array(MAX_BINS), 2);
+	$scope.lastGasLimit = _.fill(Array(MAX_BINS), 0);
+	$scope.lastFastBlocksTime = _.fill(Array(MAX_BINS), 0);
+	$scope.lastSnailBlocksTime = _.fill(Array(MAX_BINS), 0);
+	$scope.difficultyChart = _.fill(Array(MAX_BINS), 0);
+	$scope.transactionDensity = _.fill(Array(MAX_BINS), 0);
+	$scope.gasSpending = _.fill(Array(MAX_BINS), 0);
+	$scope.fruits = _.fill(Array(MAX_BINS), 0);
 	$scope.miners = [];
 
 
@@ -42,7 +42,7 @@ netStatsApp.controller('StatsCtrl', function($scope, $filter, $localStorage, soc
 	$scope.map = [];
 	$scope.fastBlockPropagationChart = [];
 	$scope.snailBlockPropagationChart = [];
-	$scope.uncleCountChart = _.fill(Array(MAX_BINS), 2);
+	$scope.uncleCountChart = _.fill(Array(MAX_BINS), 0);
 	$scope.coinbases = [];
 
 	$scope.latency = 0;

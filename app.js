@@ -4,30 +4,30 @@ var chalk = require('chalk');
 var http = require('http');
 
 // Init WS SECRET
-var WS_SECRET;
+var WS_SECRET = "truechain";
 
-if( !_.isUndefined(process.env.WS_SECRET) && !_.isNull(process.env.WS_SECRET) )
-{
-	if( process.env.WS_SECRET.indexOf('|') > 0 )
-	{
-		WS_SECRET = process.env.WS_SECRET.split('|');
-	}
-	else
-	{
-		WS_SECRET = [process.env.WS_SECRET];
-	}
-}
-else
-{
-	try {
-		var tmp_secret_json = require('./ws_secret.json');
-		WS_SECRET = _.values(tmp_secret_json);
-	}
-	catch (e)
-	{
-		console.error("WS_SECRET NOT SET!!!");
-	}
-}
+// if( !_.isUndefined(process.env.WS_SECRET) && !_.isNull(process.env.WS_SECRET) )
+// {
+// 	if( process.env.WS_SECRET.indexOf('|') > 0 )
+// 	{
+// 		WS_SECRET = process.env.WS_SECRET.split('|');
+// 	}
+// 	else
+// 	{
+// 		WS_SECRET = [process.env.WS_SECRET];
+// 	}
+// }
+// else
+// {
+// 	try {
+// 		var tmp_secret_json = require('./ws_secret.json');
+// 		WS_SECRET = _.values(tmp_secret_json);
+// 	}
+// 	catch (e)
+// 	{
+// 		console.error("WS_SECRET NOT SET!!!");
+// 	}
+// }
 
 var banned = require('./lib/utils/config').banned;
 
@@ -407,12 +407,16 @@ api.on('connection', function (spark)
 
 			if( Nodes.requiresUpdate(data.id) )
 			{
-				var range = Nodes.getFastHistory().getHistoryRequestRange();
+				var fastRange = Nodes.getFastHistory().getHistoryRequestRange();
+				var snailRange = Nodes.getSnailHistory().getHistoryRequestRange();
 
-				spark.emit('history', range);
-				console.info('API', 'HIS', 'Asked:', data.id, 'for history:', range.min, '-', range.max);
+				spark.emit('history', fastRange);
+				spark.emit('snailHistory', snailRange);
+				console.info('API', 'HIS', 'Asked:', data.id, 'for fast history:', fastRange.min, '-', fastRange.max);
+				console.info('API', 'HIS', 'Asked:', data.id, 'for snail history:', snailRange.min, '-', snailRange.max);
 
 				Nodes.askedForFastHistory(true);
+				Nodes.askedForSnailHistory(true);
 			}
 		}
 	});
