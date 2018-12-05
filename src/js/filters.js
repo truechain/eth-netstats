@@ -161,11 +161,14 @@ angular.module('netStatsApp.filters', [])
 	};
 })
 .filter('blockClass', function() {
-	return function(current, best) {
+	return function(current, bestFast) {
 		if( ! current.active)
 			return 'text-gray';
 
-		return (best - current.block.number < 1 ? 'text-success' : (best - current.block.number === 1 ? 'text-warning' : (best - current.block.number > 1 && best - current.block.number < 4 ? 'text-orange' : 'text-danger')));
+		return (bestFast - current.fastBlock.number < 1
+			? 'text-success' : (bestFast - current.fastBlock.number === 1
+				? 'text-warning' : (bestFast - current.fastBlock.number > 1 && bestFast - current.fastBlock.number < 4
+					? 'text-orange' : 'text-danger')));
 	};
 })
 .filter('gasPriceFilter', ['$filter', function(filter) {
@@ -220,46 +223,46 @@ angular.module('netStatsApp.filters', [])
 	};
 })
 .filter('propagationTimeClass', function() {
-	return function(stats, bestBlock) {
+	return function(stats, bestFastBlock) {
 		if( ! stats.active)
 			return 'text-gray';
 
-		if(stats.block.number < bestBlock)
+		if(stats.fastBlock.number < bestFastBlock)
 			return 'text-gray';
 
-		if(stats.block.propagation == 0)
+		if(stats.fastBlock.propagation == 0)
 			return 'text-info';
 
-		if(stats.block.propagation < 1000)
+		if(stats.fastBlock.propagation < 1000)
 			return 'text-success';
 
-		if(stats.block.propagation < 3000)
+		if(stats.fastBlock.propagation < 3000)
 			return 'text-warning';
 
-		if(stats.block.propagation < 7000)
+		if(stats.fastBlock.propagation < 7000)
 			return 'text-orange';
 
 		return 'text-danger'
 	};
 })
 .filter('propagationNodeAvgTimeClass', function() {
-	return function(stats, bestBlock) {
+	return function(stats, bestFastBlock) {
 		if( ! stats.active)
 			return 'text-gray';
 
-		if(stats.block.number < bestBlock)
+		if(stats.fastBlock.number < bestFastBlock)
 			return 'text-gray';
 
-		if(stats.propagationAvg == 0)
+		if(stats.fastPropagationAvg == 0)
 			return 'text-info';
 
-		if(stats.propagationAvg < 1000)
+		if(stats.fastPropagationAvg < 1000)
 			return 'text-success';
 
-		if(stats.propagationAvg < 3000)
+		if(stats.fastPropagationAvg < 3000)
 			return 'text-warning';
 
-		if(stats.propagationAvg < 7000)
+		if(stats.fastPropagationAvg < 7000)
 			return 'text-orange';
 
 		return 'text-danger'
@@ -392,10 +395,10 @@ angular.module('netStatsApp.filters', [])
 	};
 })
 .filter('blockPropagationAvgFilter', function() {
-	return function(stats, bestBlock) {
-		var ms = stats.propagationAvg;
+	return function(stats, bestFastBlock) {
+		var ms = stats.fastPropagationAvg;
 
-		if(bestBlock - stats.block.number > 40)
+		if(bestFastBlock - stats.fastBlock.number > 40)
 			return "∞";
 		//ms = _.now() - stats.block.received;
 

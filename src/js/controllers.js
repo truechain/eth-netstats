@@ -15,7 +15,6 @@ netStatsApp.controller('StatsCtrl', function($scope, $filter, $localStorage, soc
 	$scope.upTimeTotal = 0;
 	$scope.avgHashrate = 0;
 	$scope.uncleCount = 0;
-	$scope.avgBlockTime = 0;
 
 	$scope.bestFastBlock = 0;
 	$scope.lastFastBlock = 0;
@@ -30,7 +29,8 @@ netStatsApp.controller('StatsCtrl', function($scope, $filter, $localStorage, soc
 	$scope.bestSnailStats = {};
 
 	$scope.lastGasLimit = _.fill(Array(MAX_BINS), 2);
-	$scope.lastBlocksTime = _.fill(Array(MAX_BINS), 2);
+	$scope.lastFastBlocksTime = _.fill(Array(MAX_BINS), 2);
+	$scope.lastSnailBlocksTime = _.fill(Array(MAX_BINS), 2);
 	$scope.difficultyChart = _.fill(Array(MAX_BINS), 2);
 	$scope.transactionDensity = _.fill(Array(MAX_BINS), 2);
 	$scope.gasSpending = _.fill(Array(MAX_BINS), 2);
@@ -40,7 +40,8 @@ netStatsApp.controller('StatsCtrl', function($scope, $filter, $localStorage, soc
 
 	$scope.nodes = [];
 	$scope.map = [];
-	$scope.blockPropagationChart = [];
+	$scope.fastBlockPropagationChart = [];
+	$scope.snailBlockPropagationChart = [];
 	$scope.uncleCountChart = _.fill(Array(MAX_BINS), 2);
 	$scope.coinbases = [];
 
@@ -357,6 +358,7 @@ netStatsApp.controller('StatsCtrl', function($scope, $filter, $localStorage, soc
 				break;
 
 			case "blockPropagationChart":
+				console.error( "IN BLOCKPROPAGATIONCHART", data );
 				$scope.blockPropagationChart = data.histogram;
 				$scope.blockPropagationAvg = data.avg;
 
@@ -370,25 +372,47 @@ netStatsApp.controller('StatsCtrl', function($scope, $filter, $localStorage, soc
 				break;
 
 			case "fastCharts":
-				console.error( "IN FAST CHARTS", data );
-				if( !_.isEqual($scope.avgBlockTime, data.avgBlocktime) )
-					$scope.avgBlockTime = data.avgBlocktime;
-
-				if( !_.isEqual($scope.avgHashrate, data.avgHashrate) )
-					$scope.avgHashrate = data.avgHashrate;
+				if( !_.isEqual($scope.avgFastBlockTime, data.avgBlocktime) )
+					$scope.avgFastBlockTime = data.avgBlocktime;
 
 				if( !_.isEqual($scope.lastGasLimit, data.gasLimit) && data.gasLimit.length >= MAX_BINS )
 					$scope.lastGasLimit = data.gasLimit;
 
-				if( !_.isEqual($scope.lastBlocksTime, data.blocktime) && data.blocktime.length >= MAX_BINS )
-					$scope.lastBlocksTime = data.blocktime;
+				if( !_.isEqual($scope.lastFastBlocksTime, data.blocktime) && data.blocktime.length >= MAX_BINS )
+				{
+					$scope.lastFastBlocksTime = data.blocktime;
+					console.log("lastFastBlocksTime:", data.blocktime);
+				}
+
+				if( !_.isEqual($scope.fastBlockPropagationChart, data.propagation.histogram) ) {
+					$scope.fastBlockPropagationChart = data.propagation.histogram;
+					$scope.fastBlockPropagationAvg = data.propagation.avg;
+				}
+
+				if( !_.isEqual($scope.transactionDensity, data.transactions) && data.transactions.length >= MAX_BINS )
+					$scope.transactionDensity = data.transactions;
+
+				if( !_.isEqual($scope.gasSpending, data.gasSpending) && data.gasSpending.length >= MAX_BINS )
+					$scope.gasSpending = data.gasSpending;
+
+				break;
+
+			case "snailCharts":
+				if( !_.isEqual($scope.avgSnailBlockTime, data.avgBlocktime) )
+					$scope.avgSnailBlockTime = data.avgBlocktime;
+
+				if( !_.isEqual($scope.avgHashrate, data.avgHashrate) )
+					$scope.avgHashrate = data.avgHashrate;
+
+				if( !_.isEqual($scope.lastSnailBlocksTime, data.blocktime) && data.blocktime.length >= MAX_BINS )
+					$scope.lastSnailBlocksTime = data.blocktime;
 
 				if( !_.isEqual($scope.difficultyChart, data.difficulty) && data.difficulty.length >= MAX_BINS )
 					$scope.difficultyChart = data.difficulty;
 
-				if( !_.isEqual($scope.blockPropagationChart, data.propagation.histogram) ) {
-					$scope.blockPropagationChart = data.propagation.histogram;
-					$scope.blockPropagationAvg = data.propagation.avg;
+				if( !_.isEqual($scope.snailBlockPropagationChart, data.propagation.histogram) ) {
+					$scope.snailBlockPropagationChart = data.propagation.histogram;
+					$scope.snailBlockPropagationAvg = data.propagation.avg;
 				}
 
 				data.uncleCount.reverse();
@@ -398,11 +422,9 @@ netStatsApp.controller('StatsCtrl', function($scope, $filter, $localStorage, soc
 					$scope.uncleCountChart = data.uncleCount;
 				}
 
-				if( !_.isEqual($scope.transactionDensity, data.transactions) && data.transactions.length >= MAX_BINS )
-					$scope.transactionDensity = data.transactions;
-
-				if( !_.isEqual($scope.gasSpending, data.gasSpending) && data.gasSpending.length >= MAX_BINS )
-					$scope.gasSpending = data.gasSpending;
+				if( !_.isEqual($scope.fruits, data.fruits) && data.fruits.length >= MAX_BINS ) {
+					$scope.fruits = data.fruits;
+				}
 
 				if( !_.isEqual($scope.miners, data.miners) ) {
 					$scope.miners = data.miners;

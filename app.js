@@ -85,12 +85,27 @@ Nodes.setFastChartsCallback(function (err, charts)
 {
 	if(err !== null)
 	{
-		console.error('COL', 'CHR', 'Charts error:', err);
+		console.error('COL', 'CHR', 'Fast Charts error:', err);
 	}
 	else
 	{
 		client.write({
-			action: 'charts',
+			action: 'fastCharts',
+			data: charts
+		});
+	}
+});
+
+Nodes.setSnailChartsCallback(function (err, charts)
+{
+	if(err !== null)
+	{
+		console.error('COL', 'CHR', 'Snail Charts error:', err);
+	}
+	else
+	{
+		client.write({
+			action: 'snailCharts',
 			data: charts
 		});
 	}
