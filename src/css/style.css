@@ -110,10 +110,11 @@ span.small-title,
 div.small-title-miner {
 	font-weight: 700;
 	font-size: 14px;
-	line-height: 20px;
+	/* line-height: 20px; */
 	letter-spacing: 1px;
 	text-transform: uppercase;
 	color: #aaa;
+	text-align: left;
 }
 
 span.small-title span.small {
@@ -181,7 +182,7 @@ span.small-title span.small {
 	font-size: 11px;
 	letter-spacing: -0.1px;
 	text-transform: none;
-	white-space: nowrap;
+	/* white-space: nowrap; */
 	color: #777;
 }
 
@@ -189,8 +190,9 @@ span.small-title span.small {
 	font-family: 'Lucida Console', "Courier New", Courier, monospace;
 	font-weight: bold;
 	font-size: 10px;
-	padding-top: 3px;
-	float: right;
+	/* padding-top: 3px; */
+	padding-left: 20px;
+	float: left;
 }
 
 .blocks-holder .block {
@@ -303,7 +305,7 @@ nodepropagchart {
 }
 
 .th-nodename {
-	width: 300px;
+	width: 250px;
 	text-overflow: ellipsis;
 }
 
@@ -412,6 +414,13 @@ nodepropagchart {
 
 .hoverinfo .propagationBox {
 	top: 3px;
+}
+
+.minerBlocksIndicator {
+	width: 100%;
+	float: left;
+	padding-left: 0px;
+	padding-right: auto;
 }
 
 svg {

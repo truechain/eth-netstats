@@ -18,7 +18,7 @@ block content
               div.pull-left.icon-full-width
                 i.icon-time
               div.big-details-holder
-                span.small-title fast last block
+                span.small-title last fast block
                 span.big-details {{ lastFastBlock | blockTimeFilter }}
                 //- span.big-details(time-ago="lastBlock")
           div.col-xs-3.stat-holder
@@ -48,7 +48,7 @@ block content
               div.pull-left.icon-full-width
                 i.icon-time
               div.big-details-holder
-                span.small-title snail last block
+                span.small-title last snail block
                 span.big-details {{ lastSnailBlock | blockTimeFilter }}
                 //- span.big-details(time-ago="lastBlock")
           div.col-xs-3.stat-holder
@@ -188,10 +188,12 @@ block content
             div.big-info.chart.xdouble-chart
               span.small-title last snail blocks miners
               div.blocks-holder(ng-repeat='miner in miners track by miner.miner', data-toggle="tooltip", data-placement="right", data-original-title="{{miner.blocks}}")
-                div.block-count(class="{{miner.blocks | minerBlocksClass : 'text-'}}") {{miner.blocks}}
+                //- div.block-count(class="{{miner.blocks | minerBlocksClass : 'text-'}}") {{miner.blocks}}
                 //- div.small-title-miner {{miner.miner | minerNameFilter : miner.name}}
                 div.small-title-miner {{miner.miner}}
-                minerblock(blocks="{{miner.blocks}}")
+                div.minerBlocksIndicator
+                  minerblock(blocks="{{miner.blocks}}")
+                  div.block-count(class="{{miner.blocks | minerBlocksClass : 'text-'}}") {{miner.blocks}}
 
     div.row
       div.col-xs-12.stats-boxes
@@ -230,7 +232,9 @@ block content
             th
               i.icon-network(data-toggle="tooltip", data-placement="top", title="Pending transactions", ng-click="orderTable(['-stats.pending'], false)")
             th
-              i.icon-block(data-toggle="tooltip", data-placement="top", title="Last block", ng-click="orderTable(['-stats.block.number', 'stats.block.propagation'], false)")
+              i.icon-block(data-toggle="tooltip", data-placement="top", title="Last fast block", ng-click="orderTable(['-stats.block.number', 'stats.block.propagation'], false)")
+            th
+              i.icon-block(data-toggle="tooltip", data-placement="top", title="Last snail block", ng-click="orderTable(['-stats.snailBlock.number', 'stats.snailBlock.propagation'], false)")
             th.th-blockhash &nbsp;
             th.th-blockhash
               i.icon-difficulty(data-toggle="tooltip", data-placement="top", title="Total difficulty", ng-click="orderTable(['-stats.block.totalDifficulty'], false)")
@@ -239,7 +243,7 @@ block content
             th
               i.icon-uncle(data-toggle="tooltip", data-placement="top", title="Uncles", ng-click="orderTable(['-stats.block.uncles.length'], false)")
             th.th-blocktime
-              i.icon-time(data-toggle="tooltip", data-placement="top", title="Last block time", ng-click="orderTable(['-stats.block.received'], false)")
+              i.icon-time(data-toggle="tooltip", data-placement="top", title="Last fast block time", ng-click="orderTable(['-stats.block.received'], false)")
             th.th-peerPropagationTime
               i.icon-gas(data-toggle="tooltip", data-placement="top", title="Propagation time", ng-click="orderTable(['-stats.block.number', 'stats.block.propagation'], false)")
             th.th-peerPropagationChart
@@ -267,6 +271,8 @@ block content
               span(class="{{ node.readable.forkMessage ? node.readable.forkClass : '' }}") {{'#'}}{{ node.stats.fastBlock.number | number }}
               //- a.small(data-toggle="tooltip", data-placement="top", data-html="true", data-original-title="{{ node.readable.forkMessage }}", class="{{ node.readable.forkClass }}")
                 i.icon-warning-o
+            td(class="{{ node.stats | blockClass : bestSnailBlock }}")
+              span(class="{{ node.readable.forkMessage ? node.readable.forkClass : '' }}") {{'#'}}{{ node.stats.snailBlock.number | number }}
             td(class="{{ node.stats | blockClass : bestFastBlock }}")
               span.small {{node.stats.fastBlock.hash | hashFilter}}
             td(class="{{ node.stats | blockClass : bestFastBlock }}")

@@ -379,10 +379,7 @@ netStatsApp.controller('StatsCtrl', function($scope, $filter, $localStorage, soc
 					$scope.lastGasLimit = data.gasLimit;
 
 				if( !_.isEqual($scope.lastFastBlocksTime, data.blocktime) && data.blocktime.length >= MAX_BINS )
-				{
 					$scope.lastFastBlocksTime = data.blocktime;
-					console.log("lastFastBlocksTime:", data.blocktime);
-				}
 
 				if( !_.isEqual($scope.fastBlockPropagationChart, data.propagation.histogram) ) {
 					$scope.fastBlockPropagationChart = data.propagation.histogram;
