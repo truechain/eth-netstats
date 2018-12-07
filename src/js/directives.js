@@ -108,7 +108,9 @@ angular.module('netStatsApp.directives', [])
 						element.addClass("big-details");
 						element.sparkline('html', {
 							type: 'bar',
-							tooltipSuffix: (attrs.tooltipsuffix || '')
+							tooltipSuffix: (attrs.tooltipsuffix || ''),
+							chartRangeMin: attrs.minvalue,
+							chartRangeMax: attrs.maxvalue
 						});
 					});
 				};

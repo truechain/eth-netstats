@@ -182,7 +182,7 @@ block content
               //- i.icon-difficulty
               span.small-title fruit number
               //- span.small-value {{ lastDifficulty | number }}
-              sparkchart.big-details.spark-difficulty(data="{{fruits.join(',')}}")
+              sparkchart.big-details.spark-difficulty(data="{{fruits.join(',')}}", minvalue="0", maxvalue="100")
 
           div.col-xs-2.stat-holder.xpull-right
             div.big-info.chart.xdouble-chart
