@@ -44,12 +44,12 @@ block content
                 span.big-details {{'#'}}{{ bestSnailBlock | number}}
               div.clearfix
           div.col-xs-3.stat-holder
-            div.big-info.blocktime(class="{{ lastSnailBlock | timeClass : true }}")
+            div.big-info.blocktime(class="{{ lastSnailBlock | snailTimeClass : true }}")
               div.pull-left.icon-full-width
                 i.icon-time
               div.big-details-holder
                 span.small-title last snail block
-                span.big-details {{ lastSnailBlock | blockTimeFilter }}
+                span.big-details {{ lastSnailBlock | snailBlockTimeFilter }}
                 //- span.big-details(time-ago="lastBlock")
           div.col-xs-3.stat-holder
             div.big-info.avgblocktime(class="{{ avgBlockTime | avgTimeClass }}")
@@ -138,14 +138,14 @@ block content
               //- i.icon-difficulty
               span.small-title gas limit
               //- span.small-value {{ lastDifficulty | number }}
-              sparkchart.big-details.spark-difficulty(data="{{lastGasLimit.join(',')}}")
+              sparkchart.big-details.spark-difficulty(data="{{lastGasLimit.join(',')}}", minvalue="1000000")
 
           div.col-xs-2.stat-holder
             div.big-info.chart.text-info
               //- i.icon-difficulty
               span.small-title pbft committee number
               //- span.small-value {{ lastDifficulty | number }}
-              sparkchart.big-details.spark-difficulty(data="{{lastGasLimit.join(',')}}")
+              //- sparkchart.big-details.spark-difficulty(data="{{lastGasLimit.join(',')}}")
               div.clearfix
 
           div.col-xs-2.stat-holder
@@ -160,7 +160,7 @@ block content
               //- i.icon-difficulty
               span.small-title snail difficulty
               //- span.small-value {{ lastDifficulty | number }}
-              sparkchart.big-details.spark-difficulty(data="{{difficultyChart.join(',')}}")
+              sparkchart.big-details.spark-difficulty(data="{{difficultyChart.join(',')}}", minvalue="1000")
 
           div.col-xs-2.stat-holder.xpull-right
             div.big-info.chart.xdouble-chart(class="{{ snailBlockPropagationAvg | propagationAvgTimeClass : true }}")
@@ -168,14 +168,6 @@ block content
               span.small-title snail block propagation
               //- span.small-value {{ blockPropagationAvg | blockPropagationFilter : '' }}
               histogram.big-details.d3-snailblockpropagation(data="snailBlockPropagationChart", d3class=".d3-snailblockpropagation")
-
-          div.col-xs-2.stat-holder
-            div.big-info.chart.text-info
-              //- i.icon-uncle
-              span.small-title uncle count&nbsp;
-                span.small (25 blocks per bar)
-              //- span.small-value {{ bestStats.block.uncles.length }}/{{ uncleCount }}
-              sparkchart.big-details.spark-uncles(data="{{uncleCountChart.join(',')}}")
 
           div.col-xs-2.stat-holder
             div.big-info.chart.text-info
@@ -194,6 +186,14 @@ block content
                 div.minerBlocksIndicator
                   minerblock(blocks="{{miner.blocks}}")
                   div.block-count(class="{{miner.blocks | minerBlocksClass : 'text-'}}") {{miner.blocks}}
+
+          div.col-xs-2.stat-holder
+            div.big-info.chart.text-info
+              //- i.icon-uncle
+              span.small-title uncle count&nbsp;
+                span.small (25 blocks per bar)
+              //- span.small-value {{ bestStats.block.uncles.length }}/{{ uncleCount }}
+              sparkchart.big-details.spark-uncles(data="{{uncleCountChart.join(',')}}")
 
     div.row
       div.col-xs-12.stats-boxes

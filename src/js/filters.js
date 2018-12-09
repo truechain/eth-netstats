@@ -222,6 +222,14 @@ angular.module('netStatsApp.filters', [])
 		return timeClass(timestamp);
 	};
 })
+.filter('snailTimeClass', function() {
+	return function(timestamp, active) {
+		if( ! active)
+			return 'text-gray';
+
+		return snailTimeClass(timestamp);
+	};
+})
 .filter('propagationTimeClass', function() {
 	return function(stats, bestFastBlock) {
 		if( ! stats.active)
@@ -320,6 +328,21 @@ angular.module('netStatsApp.filters', [])
 		var diff = Math.floor((time - timestamp)/1000);
 
 		if(diff < 60)
+			return Math.round(diff) + ' s ago';
+
+		return moment.duration(Math.round(diff), 's').humanize() + ' ago';
+	};
+})
+.filter('snailBlockTimeFilter', function() {
+	return function(timestamp) {
+		if(timestamp === 0)
+			return '∞';
+
+		// var time = Math.floor((new Date()).getTime() / 1000);
+		var time = (new Date()).getTime();
+		var diff = Math.floor((time - timestamp)/1000);
+
+		if(diff < 720)
 			return Math.round(diff) + ' s ago';
 
 		return moment.duration(Math.round(diff), 's').humanize() + ' ago';
@@ -663,13 +686,34 @@ function timeClass(timestamp)
 
 function blockTimeClass(diff)
 {
-	if(diff <= 13)
+	if(diff <= 5)
 		return 'text-success';
 
-	if(diff <= 20)
+	if(diff <= 10)
 		return 'text-warning';
 
 	if(diff <= 30)
+		return 'text-orange';
+
+	return 'text-danger'
+}
+
+function snailTimeClass(timestamp)
+{
+	var diff = ((new Date()).getTime() - timestamp)/1000;
+
+	return snailBlockTimeClass(diff);
+}
+
+function snailBlockTimeClass(diff)
+{
+	if(diff <= 600)
+		return 'text-success';
+
+	if(diff <= 720)
+		return 'text-warning';
+
+	if(diff <= 1440)
 		return 'text-orange';
 
 	return 'text-danger'
