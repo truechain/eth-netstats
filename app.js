@@ -2,6 +2,7 @@ var _ = require('lodash');
 var logger = require('./lib/utils/logger');
 var chalk = require('chalk');
 var http = require('http');
+var trusted = require('./lib/utils/config').trusted;
 
 // Init WS SECRET
 // var WS_SECRET = 'truechain';
@@ -148,7 +149,8 @@ api.on('connection', function (spark)
 				{
 					spark.emit('ready');
 
-					console.success('API', 'CON', 'Connected', data.id);
+					console.success('API', 'CON', 'Connected', data.id, data.ip,
+						trusted.indexOf(data.ip) >= 0 ? "(trusted:TRUE)" : "(trusted:FALSE)");
 
 					client.write({
 						action: 'add',
