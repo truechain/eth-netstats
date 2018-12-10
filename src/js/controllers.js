@@ -372,6 +372,7 @@ netStatsApp.controller('StatsCtrl', function($scope, $filter, $localStorage, soc
 				break;
 
 			case "fastCharts":
+				console.info("fastChartsData: ", data);
 				if( !_.isEqual($scope.avgFastBlockTime, data.avgBlocktime) )
 					$scope.avgFastBlockTime = data.avgBlocktime;
 
@@ -395,6 +396,7 @@ netStatsApp.controller('StatsCtrl', function($scope, $filter, $localStorage, soc
 				break;
 
 			case "snailCharts":
+				console.info("snailChartsData: ", data);
 				if( !_.isEqual($scope.avgSnailBlockTime, data.avgBlocktime) )
 					$scope.avgSnailBlockTime = data.avgBlocktime;
 
