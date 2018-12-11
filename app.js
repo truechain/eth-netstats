@@ -5,31 +5,31 @@ var http = require('http');
 var trusted = require('./lib/utils/config').trusted;
 
 // Init WS SECRET
-// var WS_SECRET = 'truechain';
-var WS_SECRET;
+var WS_SECRET = 'truechain';
+// var WS_SECRET;
 
-if( !_.isUndefined(process.env.WS_SECRET) && !_.isNull(process.env.WS_SECRET) )
-{
-	if( process.env.WS_SECRET.indexOf('|') > 0 )
-	{
-		WS_SECRET = process.env.WS_SECRET.split('|');
-	}
-	else
-	{
-		WS_SECRET = [process.env.WS_SECRET];
-	}
-}
-else
-{
-	try {
-		var tmp_secret_json = require('./ws_secret.json');
-		WS_SECRET = _.values(tmp_secret_json);
-	}
-	catch (e)
-	{
-		console.error("WS_SECRET NOT SET!!!");
-	}
-}
+// if( !_.isUndefined(process.env.WS_SECRET) && !_.isNull(process.env.WS_SECRET) )
+// {
+// 	if( process.env.WS_SECRET.indexOf('|') > 0 )
+// 	{
+// 		WS_SECRET = process.env.WS_SECRET.split('|');
+// 	}
+// 	else
+// 	{
+// 		WS_SECRET = [process.env.WS_SECRET];
+// 	}
+// }
+// else
+// {
+// 	try {
+// 		var tmp_secret_json = require('./ws_secret.json');
+// 		WS_SECRET = _.values(tmp_secret_json);
+// 	}
+// 	catch (e)
+// 	{
+// 		console.error("WS_SECRET NOT SET!!!");
+// 	}
+// }
 
 var banned = require('./lib/utils/config').banned;
 
@@ -136,6 +136,12 @@ api.on('connection', function (spark)
 			data.ip = spark.address.ip;
 			data.spark = spark.id;
 			data.latency = spark.latency || 0;
+
+			// trim the useless suffix string
+			if( data.ip.substr(0, 7) == "::ffff:" )
+			{
+				data.ip = data.ip.slice(7);
+			}
 
 			Nodes.add( data, function (err, info)
 			{
