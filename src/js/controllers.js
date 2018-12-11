@@ -403,10 +403,10 @@ netStatsApp.controller('StatsCtrl', function($scope, $filter, $localStorage, soc
 				if( !_.isEqual($scope.avgHashrate, data.avgHashrate) )
 					$scope.avgHashrate = data.avgHashrate;
 
-				if( !_.isEqual($scope.lastSnailBlocksTime, data.blocktime) && data.blocktime.length >= MAX_BINS )
+				if( !_.isEqual($scope.lastSnailBlocksTime, data.blocktime) /*&& data.blocktime.length >= MAX_BINS*/ )
 					$scope.lastSnailBlocksTime = data.blocktime;
 
-				if( !_.isEqual($scope.difficultyChart, data.difficulty) && data.difficulty.length >= MAX_BINS )
+				if( !_.isEqual($scope.difficultyChart, data.difficulty) /*&& data.difficulty.length >= MAX_BINS*/ )
 					$scope.difficultyChart = data.difficulty;
 
 				if( !_.isEqual($scope.snailBlockPropagationChart, data.propagation.histogram) ) {
@@ -421,7 +421,7 @@ netStatsApp.controller('StatsCtrl', function($scope, $filter, $localStorage, soc
 					$scope.uncleCountChart = data.uncleCount;
 				}
 
-				if( !_.isEqual($scope.fruits, data.fruits) && data.fruits.length >= MAX_BINS ) {
+				if( !_.isEqual($scope.fruits, data.fruits) /*&& data.fruits.length >= MAX_BINS*/ ) {
 					$scope.fruits = data.fruits;
 				}
 
