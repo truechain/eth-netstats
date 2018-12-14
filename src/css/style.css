@@ -191,17 +191,17 @@ span.small-title span.small {
 	font-weight: bold;
 	font-size: 10px;
 	/* padding-top: 3px; */
-	padding-left: 20px;
+	padding-left: 10px;
 	float: left;
 }
 
 .blocks-holder .block {
-	width: 6px;
+	width: 4px;
 	height: 6px;
 	margin: 2px 1px 6px 0px;
 	float: left;
 	-webkit-border-radius: 1px;
-	border-radius: 1px;
+	border-radius: 1.5px;
 	opacity: .8;
 }
 
@@ -314,11 +314,15 @@ nodepropagchart {
 }
 
 .th-latency {
-	width: 100px;
+	width: 70px;
 }
 
 .th-blockhash {
-	width: 150px;
+	width: 140px;
+}
+
+.th-totaldifficulty {
+	width: 100px;
 }
 
 .th-blocktime {
@@ -326,11 +330,11 @@ nodepropagchart {
 }
 
 .th-peerPropagationTime {
-	width: 120px;
+	width: 100px;
 }
 
 .th-peerPropagationChart {
-	width: 140px;
+	width: 160px;
 }
 
 .nodeInfo .tooltip .tooltip-inner {

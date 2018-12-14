@@ -233,10 +233,11 @@ block content
               i.icon-network(data-toggle="tooltip", data-placement="top", title="Pending transactions", ng-click="orderTable(['-stats.pending'], false)")
             th
               i.icon-block(data-toggle="tooltip", data-placement="top", title="Last fast block", ng-click="orderTable(['-stats.fastBlock.number', 'stats.fastBlock.propagation'], false)")
+            th.th-blockhash &nbsp;
             th
               i.icon-block(data-toggle="tooltip", data-placement="top", title="Last snail block", ng-click="orderTable(['-stats.snailBlock.number', 'stats.snailBlock.propagation'], false)")
             th.th-blockhash &nbsp;
-            th.th-blockhash
+            th.th-totaldifficulty
               i.icon-difficulty(data-toggle="tooltip", data-placement="top", title="Total difficulty", ng-click="orderTable(['-stats.snailBlock.totalDifficulty'], false)")
             th
               i.icon-check-o(data-toggle="tooltip", data-placement="top", title="Block transactions", ng-click="orderTable(['-stats.fastBlock.transactions.length'], false)")
@@ -271,10 +272,12 @@ block content
               span(class="{{ node.readable.forkMessage ? node.readable.forkClass : '' }}") {{'#'}}{{ node.stats.fastBlock.number | number }}
               //- a.small(data-toggle="tooltip", data-placement="top", data-html="true", data-original-title="{{ node.readable.forkMessage }}", class="{{ node.readable.forkClass }}")
                 i.icon-warning-o
+            td.nodeInfo(class="{{ node.stats | blockClass : bestFastBlock }}")
+              span.small(data-toggle="tooltip", data-placement="top", data-html="true", data-original-title="{{node.stats.fastBlock.hash}}") {{node.stats.fastBlock.hash | hashFilter}}
             td(class="{{ node.stats | blockClass : bestSnailBlock }}")
               span(class="{{ node.readable.forkMessage ? node.readable.forkClass : '' }}") {{'#'}}{{ node.stats.snailBlock.number | number }}
-            td(class="{{ node.stats | blockClass : bestFastBlock }}")
-              span.small {{node.stats.fastBlock.hash | hashFilter}}
+            td.nodeInfo(class="{{ node.stats | blockClass : bestSnailBlock }}")
+              span.small(data-toggle="tooltip", data-placement="top", data-html="true", data-original-title="{{node.stats.snailBlock.hash}}") {{node.stats.snailBlock.hash | hashFilter}}
             td(class="{{ node.stats | blockClass : bestFastBlock }}")
               span.small {{node.stats.snailBlock.totalDifficulty | number}}
             td(style="padding-left: 14px;") {{node.stats.fastBlock.transactions.length || 0}}
@@ -284,6 +287,6 @@ block content
               div.propagationBox
               span {{node.stats.fastBlock.propagation | blockPropagationFilter}}
             td.peerPropagationChart(class="{{node.id}}")
-              nodepropagchart(data="{{node.history.join(',')}}")
+              nodepropagchart(data="{{node.fastHistory.join(',')}}")
             td(class="{{ node.stats | propagationNodeAvgTimeClass : bestFastBlock }}") {{ node.stats | blockPropagationAvgFilter : bestFastBlock }}
             td(class="{{ node.stats.uptime | upTimeClass : node.stats.active }}") {{ node.stats.uptime | upTimeFilter }}
