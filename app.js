@@ -137,6 +137,12 @@ api.on('connection', function (spark)
 			data.spark = spark.id;
 			data.latency = spark.latency || 0;
 
+			// trim the useless suffix string
+			if( data.ip.substr(0, 7) == "::ffff:" )
+			{
+				data.ip = data.ip.slice(7);
+			}
+
 			Nodes.add( data, function (err, info)
 			{
 				if(err !== null)
