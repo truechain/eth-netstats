@@ -239,10 +239,10 @@ api.on('connection', function (spark)
 	{
 		if( !_.isUndefined(data.id) && !_.isUndefined(data.block) )
 		{
-			/*if (data.block.uncles === null)
+			if (data.block.uncles === null)
 			{
 				data.block.uncles = []
-			}*/
+			}
 
 			Nodes.addSnailBlock(data.id, data.block, function (err, stats)
 			{
