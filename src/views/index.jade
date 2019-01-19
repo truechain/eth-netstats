@@ -226,6 +226,8 @@ block content
             th.th-latency
               i.icon-clock(data-toggle="tooltip", data-placement="top", title="Node latency", ng-click="orderTable(['stats.latency'], false)")
             th
+              i.icon-uncle(data-toggle="tooltip", data-placement="top", title="isCommitteeMember", ng-click="orderTable(['-stats.isCommitteeMember'], false)")
+            th
               i.icon-mining(data-toggle="tooltip", data-placement="top", title="Is mining", ng-click="orderTable(['-stats.hashrate'], false)")
             th
               i.icon-group(data-toggle="tooltip", data-placement="top", title="Peers", ng-click="orderTable(['-stats.peers'], false)")
@@ -236,6 +238,7 @@ block content
             th.th-blockhash &nbsp;
             th
               i.icon-block(data-toggle="tooltip", data-placement="top", title="Last snail block", ng-click="orderTable(['-stats.snailBlock.number', 'stats.snailBlock.propagation'], false)")
+            th.th-blocknumber &nbsp;
             th.th-blockhash &nbsp;
             th.th-totaldifficulty
               i.icon-difficulty(data-toggle="tooltip", data-placement="top", title="Total difficulty", ng-click="orderTable(['-stats.snailBlock.totalDifficulty'], false)")
@@ -265,6 +268,8 @@ block content
               div.small(ng-bind-html="node.info.node | nodeVersion")
             td(class="{{ node.readable.latencyClass }}")
               span.small {{ node.readable.latency }}
+            td
+              span.small {{ node.stats.isCommitteeMember }}
             td(class="{{ node.stats.mining | hashrateClass : node.stats.active }}", ng-bind-html="node.stats.hashrate | hashrateFilter : node.stats.mining")
             td(class="{{ node.stats.peers | peerClass : node.stats.active }}", style="padding-left: 11px;") {{node.stats.peers}}
             td(style="padding-left: 15px;") {{node.stats.pending}}
@@ -276,6 +281,8 @@ block content
               span.small(data-toggle="tooltip", data-placement="top", data-html="true", data-original-title="{{node.stats.fastBlock.hash}}") {{node.stats.fastBlock.hash | hashFilter}}
             td(class="{{ node.stats | blockClass : bestSnailBlock }}")
               span(class="{{ node.readable.forkMessage ? node.readable.forkClass : '' }}") {{'#'}}{{ node.stats.snailBlock.number | number }}
+            td.nodeInfo(class="{{ node.stats | blockClass : bestSnailBlock }}")
+              span.small(data-toggle="tooltip", data-placement="top", data-html="true", data-original-title="lastFruitNumber") {{node.stats.snailBlock.lastFruit}}
             td.nodeInfo(class="{{ node.stats | blockClass : bestSnailBlock }}")
               span.small(data-toggle="tooltip", data-placement="top", data-html="true", data-original-title="{{node.stats.snailBlock.hash}}") {{node.stats.snailBlock.hash | hashFilter}}
             td(class="{{ node.stats | blockClass : bestFastBlock }}")

@@ -305,7 +305,7 @@ nodepropagchart {
 }
 
 .th-nodename {
-	width: 250px;
+	width: 125px;
 	text-overflow: ellipsis;
 }
 
@@ -319,6 +319,10 @@ nodepropagchart {
 
 .th-blockhash {
 	width: 140px;
+}
+
+.th-blocknumber {
+	width: 50px;
 }
 
 .th-totaldifficulty {
