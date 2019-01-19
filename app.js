@@ -365,12 +365,12 @@ api.on('connection', function (spark)
 		var time = chalk.reset.cyan((new Date()).toJSON()) + " ";
 		console.time(time, 'COL', 'CHR', 'Got snail charts in');
 
-		data.history = _(data.history).map(function (block) {
+		/*data.history = _(data.history).map(function (block) {
 			if (block.uncles === null) {
 				block.uncles = [];
 			}
 			return block;
-		});
+		});*/
 
 		Nodes.addSnailHistory(data.id, data.history, function (err, history)
 		{
