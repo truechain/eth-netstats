@@ -226,7 +226,7 @@ block content
             th.th-latency
               i.icon-clock(data-toggle="tooltip", data-placement="top", title="Node latency", ng-click="orderTable(['stats.latency'], false)")
             th
-              i.icon-uncle(data-toggle="tooltip", data-placement="top", title="isCommitteeMember", ng-click="orderTable(['-stats.isCommitteeMember'], false)")
+              i.icon-uncle(data-toggle="tooltip", data-placement="top", title="Is committee", ng-click="orderTable(['-stats.isCommitteeMember'], false)")
             th
               i.icon-mining(data-toggle="tooltip", data-placement="top", title="Is mining", ng-click="orderTable(['-stats.hashrate'], false)")
             th
@@ -268,8 +268,7 @@ block content
               div.small(ng-bind-html="node.info.node | nodeVersion")
             td(class="{{ node.readable.latencyClass }}")
               span.small {{ node.readable.latency }}
-            td
-              span.small {{ node.stats.isCommitteeMember }}
+            td(ng-bind-html="node.stats.isCommitteeMember | committeeFilter")
             td(class="{{ node.stats.mining | hashrateClass : node.stats.active }}", ng-bind-html="node.stats.hashrate | hashrateFilter : node.stats.mining")
             td(class="{{ node.stats.peers | peerClass : node.stats.active }}", style="padding-left: 11px;") {{node.stats.peers}}
             td(style="padding-left: 15px;") {{node.stats.pending}}

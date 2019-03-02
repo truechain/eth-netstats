@@ -57,6 +57,13 @@ angular.module('netStatsApp.filters', [])
 		return 'text-success';
 	};
 })
+.filter('committeeFilter', ['$sce', '$filter', function($sce, filter) {
+	return function(isMember) {
+		if(isMember)
+			return $sce.trustAsHtml('<i class="icon-check text-success"></i>');
+		return $sce.trustAsHtml('<i class="icon-cancel text-gray"></i>');
+	};
+}])
 .filter('hashrateFilter', ['$sce', '$filter', function($sce, filter) {
 	return function(hashes, isMining) {
 		var result = 0;
