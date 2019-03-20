@@ -58,9 +58,12 @@ angular.module('netStatsApp.filters', [])
 	};
 })
 .filter('committeeFilter', ['$sce', '$filter', function($sce, filter) {
-	return function(isMember) {
-		if(isMember)
+	return function(isMember, isLeader) {
+		if(isMember) {
+			if(isLeader)
+				return $sce.trustAsHtml('<i class="icon-check text-warning"></i>');
 			return $sce.trustAsHtml('<i class="icon-check text-success"></i>');
+		}
 		return $sce.trustAsHtml('<i class="icon-cancel text-gray"></i>');
 	};
 }])

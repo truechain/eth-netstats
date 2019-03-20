@@ -326,6 +326,7 @@ netStatsApp.controller('StatsCtrl', function($scope, $filter, $localStorage, soc
 						$scope.nodes[index].stats.gasPrice = data.stats.gasPrice;
 						$scope.nodes[index].stats.uptime = data.stats.uptime;
 						$scope.nodes[index].stats.isCommitteeMember = data.stats.isCommitteeMember;
+						$scope.nodes[index].stats.isLeader = data.stats.isLeader;
 
 						if( !_.isUndefined(data.stats.latency) && _.get($scope.nodes[index], 'stats.latency', 0) !== data.stats.latency )
 						{

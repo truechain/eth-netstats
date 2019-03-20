@@ -268,7 +268,7 @@ block content
               div.small(ng-bind-html="node.info.node | nodeVersion")
             td(class="{{ node.readable.latencyClass }}")
               span.small {{ node.readable.latency }}
-            td(ng-bind-html="node.stats.isCommitteeMember | committeeFilter")
+            td(ng-bind-html="node.stats.isCommitteeMember | committeeFilter : node.stats.isLeader")
             td(class="{{ node.stats.mining | hashrateClass : node.stats.active }}", ng-bind-html="node.stats.hashrate | hashrateFilter : node.stats.mining")
             td(class="{{ node.stats.peers | peerClass : node.stats.active }}", style="padding-left: 11px;") {{node.stats.peers}}
             td(style="padding-left: 15px;") {{node.stats.pending}}
